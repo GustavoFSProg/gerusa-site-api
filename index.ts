@@ -7,7 +7,7 @@ dotenv.config()
 
 const { PORT } = process.env
 
-origin: ["https://junho-blog.netlify.app", "http://localhost:5173"] //
+// origin: ["https://junho-blog.netlify.app", "http://localhost:5173"] 
 
 const app = express()
 

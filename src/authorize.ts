@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { verifyToken } from './Token'
+import { verifyToken } from './token'
 
 // eslint-disable-next-line import/prefer-default-export
 export async function isAuthorized(req: Request, res: Response, next: any) {
