@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { PrismaClient } from '@prisma/client'
 import md5 from 'md5'
 import jwt from 'jsonwebtoken'
+import { isAuthorized } from '../authorize'
 
 const prisma = new PrismaClient()
 
@@ -20,6 +21,18 @@ async function createUser(req: Request, res: Response) {
     return res.status(400).json({ msg: 'ERROR!!!', error })
   }
 }
+
+async function Auth(req: Request, res: Response) {
+  try {
+    
+
+
+    return res.status(200).json({msg: "Autenticação efetuado com sucesso!"})
+  } catch (error) {
+    return res.status(400).json({ msg: 'Deu erro!' })
+  }
+}
+
 
 async function getAll(req: Request, res: Response) {
   try {
@@ -102,4 +115,4 @@ async function Login(req: Request, res: Response) {
   }
 }
 
-export default { Login, deleteUser, createUser, update, getAll, getOne }
+export default { Login, Auth, deleteUser, createUser, update, getAll, getOne }
