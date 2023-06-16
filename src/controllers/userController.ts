@@ -25,11 +25,9 @@ async function createUser(req: Request, res: Response) {
 async function Auth(req: Request, res: Response) {
   try {
     
-
-
     return res.status(200).json({msg: "Autenticação efetuado com sucesso!"})
   } catch (error) {
-    return res.status(400).json({ msg: 'Deu erro!' })
+    return res.status(400).json({ desg: 'Deu erro!' })
   }
 }
 
