@@ -14,7 +14,8 @@ const app = express()
 
   
 app.use(cors({
-  origin: "https://gerusa-site.netlify.app"
+  origin: ["https://gerusa-site.netlify.app", "http://localhost:5173"]
+
  
 }))
 
