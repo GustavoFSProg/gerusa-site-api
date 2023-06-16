@@ -32,3 +32,11 @@ model Contato {
   message   String
   createdAt DateTime @default(now())
 }
+
+model Users {
+  id        String   @id @default(uuid()) @map("_id")
+  name      String
+  email     String
+  password  String
+  createdAt DateTime @default(now())
+}
