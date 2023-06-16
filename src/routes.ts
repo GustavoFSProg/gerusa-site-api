@@ -27,7 +27,7 @@ routes.get('/get-all-contacts', isAuthorized, ContactsController.getAllContacts)
 routes.post('/register-users', userController.createUser)
 routes.post('/login', userController.Login)
 
-routes.post('/auth', isAuthorized,  userController.Auth)
+routes.post('/auth', userController.AuthUser)
 
 routes.get("/", (req: Request, res: Response) => {
   return res.status(200).send({ Message: ` App Running on Get` })

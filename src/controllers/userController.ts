@@ -3,6 +3,8 @@ import { PrismaClient } from '@prisma/client'
 import md5 from 'md5'
 import jwt from 'jsonwebtoken'
 import { isAuthorized } from '../authorize'
+import { verifyToken } from '../token'
+
 
 const prisma = new PrismaClient()
 
@@ -30,6 +32,29 @@ async function Auth(req: Request, res: Response) {
     return res.status(400).json({ desg: 'Deu erro!' })
   }
 }
+
+
+// eslint-disable-next-line import/prefer-default-export
+ async function AuthUser(req: Request, res: Response, next: any) {
+  const token = req.body.token || req.headers['x-access-token']
+
+  if (!token) return res.status(401).send({ error: 'Not authorized' })
+
+  const { error, decode  }: any = await verifyToken(token)
+
+  if (error) return res.status(401).send({ error: 'Invalid token' })
+  // req.body.currentUser = await getCurrentUser(decode.email)
+
+  
+  if(!error){
+    
+    let data = "data"
+     
+     return  res.status(200).json({msg: "Deus certo!!", data})
+    }
+}
+
+
 
 
 async function getAll(req: Request, res: Response) {
@@ -113,4 +138,4 @@ async function Login(req: Request, res: Response) {
   }
 }
 
-export default { Login, Auth, deleteUser, createUser, update, getAll, getOne }
+export default { Login, AuthUser, Auth, deleteUser, createUser, update, getAll, getOne }

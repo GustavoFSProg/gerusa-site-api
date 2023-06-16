@@ -31,6 +31,7 @@ export function verifyToken(token: any) {
   return (
     jwt.verify(token, process.env.SECRET as string & { asBytes: true }),
     (error: any, decode: any) => {
+      
       if (error) return { error } as any
       return { decode } as any
     }

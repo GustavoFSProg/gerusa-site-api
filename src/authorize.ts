@@ -13,3 +13,4 @@ export async function isAuthorized(req: Request, res: Response, next: any) {
   // req.body.currentUser = await getCurrentUser(decode.email)
   return next()
 }
+
