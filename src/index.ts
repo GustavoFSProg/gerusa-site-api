@@ -14,7 +14,7 @@ const app = express()
 
   
 app.use(cors({
-  origin: "https://junho-blog.netlify.app"
+  origin: "https://gerusa-site.netlify.app"
  
 }))
 
