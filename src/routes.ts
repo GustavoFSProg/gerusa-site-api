@@ -6,6 +6,7 @@ import uploadConfig from './config/uploadConfig'
 import multer from 'multer'
 import postController from './controllers/postController'
 import ContactsController from './controllers/contactsController'
+import userController from './controllers/userController'
 
 const upload = multer(uploadConfig)
 
@@ -21,6 +22,10 @@ routes.delete('/delete-all-posts', postController.deleteAll)
 
 routes.post('/register-contacts', ContactsController.RegisterContacts)
 routes.get('/get-all-contacts', ContactsController.getAllContacts)
+
+routes.post('/register-users', userController.createUser)
+routes.post('/login', userController.Login)
+
 
 routes.get("/", (req: Request, res: Response) => {
   return res.status(200).send({ Message: ` App Running on Get` })
