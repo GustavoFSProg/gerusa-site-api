@@ -1,0 +1,159 @@
+﻿Agora atualize o arquivo tsconfig.json que foi gerado, com as seguintes propriedades:
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "lib": ["ES6"],
+    "strict": true,
+    "esModuleInterop": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}
+asdfasdfasdf
+
+npm i ts-node nodemon -D
+
+
+"scripts": { "dev": "nodemon --watch 'src/' --exec 'ts-node src/app.ts' -e ts", },
+
+
+ESLINT:
+
+Getting Started
+Quickstart​
+These steps will get you running ESLint with our recommended rules on your TypeScript code as quickly as possible.
+Step 1: Installation​
+First, install the required packages for ESLint, TypeScript, and this plugin:
+    • npm
+    • Yarn
+yarn add --dev @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint typescript
+Step 2: Configuration​
+Next, create a .eslintrc.cjs config file in the root of your project, and populate it with the following:
+.eslintrc.cjs
+module.exports = {
+  extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended'],
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
+  root: true,
+};
+
+
+Step 3: Running ESLint​
+Open a terminal to the root of your project and run the following command:
+    • npm
+    • Yarn
+yarn eslint .
+
+
+
+
+
+
+
+
+
+
+
+Configurando o Jest
+Se você já trabalhou com Mocha, Chai, Sinon, entre outras ferramentas para testes e cobertura de código, recomendo conhecer o Jest, criada no Facebook por Christoph Pojer, atualmente é uma das melhores ferramentas para construção de teste.
+Vamos iniciar a instalação do Jest:
+npm i jest ts-jest @types/jest
+Para este exemplo, vamos precisar do Supertest, por que além de realizar a assertação, precisamos simular a requisição da nossa API, o Supertest será responsável por esta tarefa.
+Instalando as dependências:
+npm i supertest @types/supertest
+Agora crie o arquivo jest.config.js, este arquivo vai conter as seguintes regras para o Jest:
+module.exports = {
+  // Automatically clear mock calls and instances between every test
+  clearMocks: true,
+  // The directory where Jest should output its coverage files
+  coverageDirectory: "coverage",
+  // An array of file extensions your modules use
+  moduleFileExtensions: ["js", "json", "jsx", "ts", "tsx", "node"],
+  // The test environment that will be used for testing
+  testEnvironment: "node",
+  // A preset that is used as a base for Jest's configuration
+  preset: 'ts-jest',
+};
+Por último, vamos adicionar no package.json o script para executar o Jest, os scripts devem ficar assim:
+"scripts": {
+  "dev": "nodemon --watch 'src/' --exec 'ts-node src/app.ts' -e ts",
+  "test": "jest"
+},
+
+Configuração para Produção
+Agora precisamos transpilar nosso código TypeScript em Javascript para produção. No lugar do TSC vamos utilizar o Babel, pois é a ferramenta que oferece maior compatibilidade e performance, mas adianto que existem inúmeros outros benefícios, se tiver interesse em saber todos eles, confira mais detalhes neste artigo.
+Vamos instalar as seguintes dependências do Babel:
+
+npm i -D @babel/cli @babel/core @babel/node @babel/preset-env @babel/preset-typescript
+
+Feito a instalação, vamos configurar o babel, crie um arquivo chamado babel.rc e adicione as seguintes configurações:
+module.exports = {
+  presets: [
+    [
+      '@babel/preset-env',
+      {
+        targets: {
+          node: 'current'
+        }
+      }
+    ],
+    '@babel/preset-typescript'
+  ],
+  ignore: [
+    '**/*.test.ts'
+  ]
+}
+
+"scripts": { "start": "node dist/app.js", "build": "babel src --out-dir dist --no-copy-ignored", "dev": "nodemon --watch 'src/' --exec 'ts-node src/app.ts' -e ts", "test": "jest" },
+
+
+Configuração do ESLint
+Um ajuste importante para nosso setup é adicionar o ESLint, este pacote vai se encarregar de manter a qualidade do nosso código, garantindo o estilo, apontando possíveis problemas e aplicando correções.
+Vamos ao primeiro passo, instale a dependência do ESLint:
+npm i eslint -D
+Execute o comando eslint –init para iniciar a configuração, escolha as seguintes opções:
+How would you like to use ESLint?
+❯ To check syntax, find problems, and enforce code style
+What type of modules does your project use?
+❯ JavaScript modules (import/export)
+Which framework does your project use?
+❯ None of these
+Does your project use TypeScript?
+❯ Yes
+Where does your code run?
+Aperte espaço para desmarcar Browser, mova para Node e aperte espaço para selecionar.
+How would you like to define a style for your project?
+❯ Use a popular style guide
+❯ Standard: https://github.com/standard/standard
+What format do you want your config file to be in?
+❯ JSON
+Would you like to install them now with npm?
+❯ Yes
+Pronto, se você aplicou estas respostas, teremos este arquivo .eslintrc.json:
+{
+    "env": {
+        "es2020": true,
+        "node": true
+    },
+    "extends": [
+        "standard"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": 11,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "@typescript-eslint"
+    ],
+    "rules": {
+    }
+}
+Para finalizar, adicione o arquivo .eslintignore, vamos informar ao ESLint alguns tipos de arquivos e diretório que ele deve ignorar.
+dist
+/*.js
+/*.json
+
