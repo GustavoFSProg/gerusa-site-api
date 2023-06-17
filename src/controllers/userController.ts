@@ -38,7 +38,7 @@ async function Auth(req: Request, res: Response) {
  async function AuthUser(req: Request, res: Response, next: any) {
   const token = req.body.token || req.headers['x-access-token']
 
-  if (!token) return res.status(401).send({ error: 'Not authorized' })
+  // if (!token) return res.status(401).send({ error: 'Not authorized' })
 
   const { error, decode  }: any = await verifyToken(token)
 
@@ -52,6 +52,8 @@ async function Auth(req: Request, res: Response) {
      
      return  res.status(200).json({msg: "Deus certo!!", data})
     }
+
+    return null
 }
 
 

@@ -22,7 +22,7 @@ routes.delete('/delete-post/:id', postController.deletePost)
 routes.delete('/delete-all-posts', postController.deleteAll)
 
 routes.post('/register-contacts', ContactsController.RegisterContacts)
-routes.get('/get-all-contacts', isAuthorized, ContactsController.getAllContacts)
+routes.get('/get-all-contacts', ContactsController.getAllContacts)
 
 routes.post('/register-users', userController.createUser)
 routes.post('/login', userController.Login)

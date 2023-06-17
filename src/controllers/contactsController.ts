@@ -33,13 +33,14 @@ async function RegisterContacts(req: Request, res: Response) {
 async function getAllContacts(req: Request, res: Response) {
   try {
 
-    const data = await prisma.contato.findMany()
+    const data = await prisma.contato.findMany({
+      orderBy: {createdAt: 'desc'}
+    })
 
     return res.status(201).send({  data })
   } catch (error) {
     return res.status(400).send({ msg: "Error!", error })
   }
 }
-
 
 export default {RegisterContacts, getAllContacts }
