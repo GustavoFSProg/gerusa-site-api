@@ -11,22 +11,24 @@ const prisma = new PrismaClient()
 
 async function RegisterPost(req: Request, res: Response) {
   try {
-    cloudinary.config({
-      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-      api_key: process.env.CLOUDINARY_API_KEY,
-      api_secret: process.env.CLOUDINARY_API_SECRET,
-    })
+    // cloudinary.config({
+    //   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    //   api_key: process.env.CLOUDINARY_API_KEY,
+    //   api_secret: process.env.CLOUDINARY_API_SECRET,
+    // })
 
-    cloudinary.uploader.upload(req.file?.path, function (result: any, error: any) {
-      imagem = result.secure_url
-      resultado = result
-      console.log(resultado)
-    })
+    // cloudinary.uploader.upload(req.file?.path, function (result: any, error: any) {
+    //   imagem = result.secure_url
+    //   resultado = result
+    //   console.log(resultado)
+    // })
+
+    const video = req.file?.filename
 
     const data = await prisma.posts.create({
       data: {
         title: req.body.title,
-        image: imagem,
+        image: video,
         text: req.body.text,
         desc: req.body.desc,
         likes: Number(req.body.likes),
@@ -44,23 +46,28 @@ async function RegisterPost(req: Request, res: Response) {
 
 async function UpdatePost(req: Request, res: Response) {
   try {
-    cloudinary.config({
-      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-      api_key: process.env.CLOUDINARY_API_KEY,
-      api_secret: process.env.CLOUDINARY_API_SECRET,
-    })
+    // cloudinary.config({
+    //   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    //   api_key: process.env.CLOUDINARY_API_KEY,
+    //   api_secret: process.env.CLOUDINARY_API_SECRET,
+    // })
 
-    cloudinary.uploader.upload(req.file?.path, function (result: any, error: any) {
-      imagem = result.secure_url
-      resultado = result
-      console.log(resultado)
-    })
+    // cloudinary.uploader.upload(req.file?.path, function (result: any, error: any) {
+    //   imagem = result.secure_url
+    //   resultado = result
+    //   console.log(resultado)
+    // })
+    console.log(req.file?.filename)
+
+    const video = req.file?.filename
+
+   
 
     const data = await prisma.posts.update({
       where: { id: req.params.id },
       data: {
         title: req.body.title,
-        image: imagem,
+        image: video,
         text: req.body.text,
         desc: req.body.desc,
         likes: Number(req.body.likes),

@@ -2,7 +2,7 @@ import express, { Router, Request, Response } from 'express'
 
 const routes = Router()
 
-import uploadConfig from './config/uploadConfig'
+import uploadConfig from './config/upload_folder'
 import multer from 'multer'
 import postController from './controllers/postController'
 import ContactsController from './controllers/contactsController'
@@ -12,7 +12,7 @@ import { isAuthorized } from './authorize'
 const upload = multer(uploadConfig)
 
 routes.post('/register', isAuthorized, upload.single('image'), postController.RegisterPost)
-routes.get('/get-all-posts', isAuthorized, postController.getAllPosts)
+routes.get('/get-all-posts',  postController.getAllPosts)
 routes.get('/get-post/:id', postController.selectedPost)
 routes.put('/update-post/:id', upload.single('image'), postController.UpdatePost)
 routes.put('/update-likes/:id', postController.updateLikes)
