@@ -1,5 +1,9 @@
 import { PrismaClient } from "@prisma/client"
 import { Request, Response } from "express"
+import fs from 'fs'
+const { promisify } = require('util')
+
+const unlink = promisify(fs.unlink)
 
 var cloudinary = require('cloudinary')
 
@@ -57,11 +61,10 @@ async function UpdatePost(req: Request, res: Response) {
     //   resultado = result
     //   console.log(resultado)
     // })
+    
     console.log(req.file?.filename)
 
     const video = req.file?.filename
-
-   
 
     const data = await prisma.posts.update({
       where: { id: req.params.id },
@@ -148,10 +151,23 @@ async function getAllPosts(req: Request, res: Response) {
 
 async function deletePost(req: Request, res: Response) {
   try {
+
+     
+    const imagem = await prisma.posts.findFirst({
+      where: { id: req.params.id },
+
+    })
+    
+        fs.unlink(`uploads/${imagem?.image}`, (err) => {
+          if (err) throw err
+          console.log('uploads/file.txt was deleted')
+        })
+
     await prisma.posts.delete({
       where: { id: req.params.id },
 
     })
+
 
     return res.status(201).send({ msg: "Deletado" })
 
