@@ -14,3 +14,5 @@ export async function isAuthorized(req: Request, res: Response, next: any) {
   return next()
 }
 
+// teste
+
