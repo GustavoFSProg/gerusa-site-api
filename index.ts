@@ -13,12 +13,13 @@ const { PORT } = process.env
 const app = express()
 
 
-// app.use(cors({
-//   origin: ["https://gerusa-site.netlify.app", "http://localhost:5173"]
   
-// }))
+app.use(cors({
+  origin: ["https://gerusa-site.netlify.app", "http://localhost:5173"]
 
-app.use(cors())
+ 
+}))
+// app.use(cors())
 
 app.use(express.json())
 app.use(routes)
