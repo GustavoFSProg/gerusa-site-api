@@ -1,9 +1,5 @@
 import { PrismaClient } from "@prisma/client"
 import { Request, Response } from "express"
-import fs from 'fs'
-const { promisify } = require('util')
-
-const unlink = promisify(fs.unlink)
 
 var cloudinary = require('cloudinary')
 
@@ -15,24 +11,22 @@ const prisma = new PrismaClient()
 
 async function RegisterPost(req: Request, res: Response) {
   try {
-    // cloudinary.config({
-    //   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    //   api_key: process.env.CLOUDINARY_API_KEY,
-    //   api_secret: process.env.CLOUDINARY_API_SECRET,
-    // })
+    cloudinary.config({
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+    })
 
-    // cloudinary.uploader.upload(req.file?.path, function (result: any, error: any) {
-    //   imagem = result.secure_url
-    //   resultado = result
-    //   console.log(resultado)
-    // })
-
-    const video = req.file?.filename
+    cloudinary.uploader.upload(req.file?.path, function (result: any, error: any) {
+      imagem = result.secure_url
+      resultado = result
+      console.log(resultado)
+    })
 
     const data = await prisma.posts.create({
       data: {
         title: req.body.title,
-        image: video,
+        image: imagem,
         text: req.body.text,
         desc: req.body.desc,
         likes: Number(req.body.likes),
@@ -50,27 +44,23 @@ async function RegisterPost(req: Request, res: Response) {
 
 async function UpdatePost(req: Request, res: Response) {
   try {
-    // cloudinary.config({
-    //   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    //   api_key: process.env.CLOUDINARY_API_KEY,
-    //   api_secret: process.env.CLOUDINARY_API_SECRET,
-    // })
+    cloudinary.config({
+      cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+      api_key: process.env.CLOUDINARY_API_KEY,
+      api_secret: process.env.CLOUDINARY_API_SECRET,
+    })
 
-    // cloudinary.uploader.upload(req.file?.path, function (result: any, error: any) {
-    //   imagem = result.secure_url
-    //   resultado = result
-    //   console.log(resultado)
-    // })
-    
-    console.log(req.file?.filename)
-
-    const video = req.file?.filename
+    cloudinary.uploader.upload(req.file?.path, function (result: any, error: any) {
+      imagem = result.secure_url
+      resultado = result
+      console.log(resultado)
+    })
 
     const data = await prisma.posts.update({
       where: { id: req.params.id },
       data: {
         title: req.body.title,
-        image: video,
+        image: imagem,
         text: req.body.text,
         desc: req.body.desc,
         likes: Number(req.body.likes),
@@ -151,23 +141,10 @@ async function getAllPosts(req: Request, res: Response) {
 
 async function deletePost(req: Request, res: Response) {
   try {
-
-     
-    const imagem = await prisma.posts.findFirst({
-      where: { id: req.params.id },
-
-    })
-    
-        fs.unlink(`uploads/${imagem?.image}`, (err) => {
-          if (err) throw err
-          console.log('uploads/file.txt was deleted')
-        })
-
     await prisma.posts.delete({
       where: { id: req.params.id },
 
     })
-
 
     return res.status(201).send({ msg: "Deletado" })
 

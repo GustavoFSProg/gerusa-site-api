@@ -2,7 +2,7 @@ import express, { Router, Request, Response } from 'express'
 
 const routes = Router()
 
-import uploadConfig from './config/upload_folder'
+import uploadConfig from './config/UploadConfig'
 import multer from 'multer'
 import postController from './controllers/postController'
 import ContactsController from './controllers/contactsController'
