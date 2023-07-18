@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client"
 import { Request, Response } from "express"
+import { convertBufferToString, uploader } from "../config/uploader"
 
 var cloudinary = require('cloudinary')
 
@@ -17,16 +18,21 @@ async function RegisterPost(req: Request, res: Response) {
       api_secret: process.env.CLOUDINARY_API_SECRET,
     })
 
-    cloudinary.uploader.upload(req.file?.path, function (result: any, error: any) {
-      imagem = result.secure_url
-      resultado = result
-      console.log(resultado)
-    })
+    // cloudinary.uploader.upload(req.file?.path, function (result: any, error: any) {
+    //   imagem = result.secure_url
+    //   resultado = result
+    //   console.log(resultado)
+    // })
+
+    const file = convertBufferToString(req)
+    if (file === undefined) return res.status(400).json({ error: 'Error converting buffer to string' })
+
+    const { secure_url } = await uploader.upload(file)
 
     const data = await prisma.posts.create({
       data: {
         title: req.body.title,
-        image: imagem,
+        image: secure_url,
         text: req.body.text,
         desc: req.body.desc,
         likes: Number(req.body.likes),
@@ -56,11 +62,17 @@ async function UpdatePost(req: Request, res: Response) {
       console.log(resultado)
     })
 
+
+    const file = convertBufferToString(req)
+    if (file === undefined) return res.status(400).json({ error: 'Error converting buffer to string' })
+
+    const { secure_url } = await uploader.upload(file)
+
     const data = await prisma.posts.update({
       where: { id: req.params.id },
       data: {
         title: req.body.title,
-        image: imagem,
+        image: secure_url,
         text: req.body.text,
         desc: req.body.desc,
         likes: Number(req.body.likes),

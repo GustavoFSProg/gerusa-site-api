@@ -8,13 +8,14 @@ import postController from './controllers/postController'
 import ContactsController from './controllers/contactsController'
 import userController from './controllers/userController'
 import { isAuthorized } from './authorize'
+import { multerConfig } from './config/uploader'
 
 const upload = multer(uploadConfig)
 
-routes.post('/register', isAuthorized, upload.single('image'), postController.RegisterPost)
+routes.post('/register', multerConfig, postController.RegisterPost)
 routes.get('/get-all-posts',  postController.getAllPosts)
 routes.get('/get-post/:id', postController.selectedPost)
-routes.put('/update-post/:id', upload.single('image'), postController.UpdatePost)
+routes.put('/update-post/:id', multerConfig, postController.UpdatePost)
 routes.put('/update-likes/:id', postController.updateLikes)
 routes.put('/update-views/:id', postController.updateViews)
 // routes.put('/update-post/:id', upload.array('image[]', 3), postController.UpdatePost)
