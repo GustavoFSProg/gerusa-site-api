@@ -56,11 +56,6 @@ async function UpdatePost(req: Request, res: Response) {
       api_secret: process.env.CLOUDINARY_API_SECRET,
     })
 
-    cloudinary.uploader.upload(req.file?.path, function (result: any, error: any) {
-      imagem = result.secure_url
-      resultado = result
-      console.log(resultado)
-    })
 
 
     const file = convertBufferToString(req)
