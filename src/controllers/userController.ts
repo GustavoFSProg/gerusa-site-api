@@ -81,13 +81,12 @@ async function getOne(req: Request, res: Response) {
   }
 }
 
-async function update(req: Request, res: Response) {
+async function updatePassword(req: Request, res: Response) {
   try {
     await prisma.users.update({
-      where: { id: req.params.id },
+      where: { id: req.params.id  },
       data: {
-        name: req.body.name,
-        email: req.body.email,
+      
         password: String(md5(req.body.password, process.env.SECRET as string & { asBytes: true })),
       },
     })
@@ -103,6 +102,16 @@ async function deleteUser(req: Request, res: Response) {
     await prisma.users.delete({
       where: { id: req.params.id },
     })
+
+    return res.status(200).json({ mdg: 'user Deleted!' })
+  } catch (error) {
+    return res.status(400).json({ msg: 'Deu erro!' })
+  }
+}
+
+async function deleteUserMany(req: Request, res: Response) {
+  try {
+    await prisma.users.deleteMany()
 
     return res.status(200).json({ mdg: 'user Deleted!' })
   } catch (error) {
@@ -130,7 +139,8 @@ async function Login(req: Request, res: Response) {
         password: String(md5(req.body.password, process.env.SECRET as string & { asBytes: true })),
       },
     })
-    if (!user) return res.status(400).send({ msg: 'Email or password invalid!!' })
+
+    if(!user) return res.status(400).send({ msg: 'Email or password invalid!!' })
 
     const token = await generateToken(user)
 
@@ -140,4 +150,5 @@ async function Login(req: Request, res: Response) {
   }
 }
 
-export default { Login, AuthUser, Auth, deleteUser, createUser, update, getAll, getOne }
+export default { Login, AuthUser, Auth, deleteUserMany, deleteUser, createUser,
+  updatePassword, getAll, getOne }
