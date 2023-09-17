@@ -15,7 +15,7 @@ const app = express()
 
   
 app.use(cors({
-  origin: ["https://gerusa-site.netlify.app", "http://localhost:5173"]
+  origin: ["https://gamm-traducoes.netlify.app", "http://localhost:5173"]
 
  
 }))
