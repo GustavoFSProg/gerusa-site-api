@@ -28,7 +28,7 @@ routes.get('/get-all-contacts', ContactsController.getAllContacts)
 routes.post('/register-users', userController.createUser)
 routes.post('/login', userController.Login)
 // routes.delete('/delete-all', userController.deleteUserMany)
-routes.get('/get-all-users', userController.getAll)
+routes.get('/get-all-users', isAuthorized, userController.getAll)
 routes.put('/update-password/:id', userController.updatePassword)
 
 routes.post('/auth', userController.AuthUser)
