@@ -24,6 +24,7 @@ routes.delete('/delete-all-posts', postController.deleteAll)
 
 routes.post('/register-contacts', ContactsController.RegisterContacts)
 routes.get('/get-all-contacts', ContactsController.getAllContacts)
+routes.delete('/delete-contacts/:id', ContactsController.deleteContacts)
 
 routes.post('/register-users', userController.createUser)
 routes.post('/login', userController.Login)
