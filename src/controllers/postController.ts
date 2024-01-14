@@ -5,7 +5,7 @@ import { convertBufferToString, uploader } from '../config/uploader'
 var cloudinary = require('cloudinary')
 
 var imagem = ''
-var resultado = ''
+let figura = null
 
 const prisma = new PrismaClient()
 
@@ -54,25 +54,44 @@ async function UpdatePost(req: Request, res: Response) {
       api_key: process.env.CLOUDINARY_API_KEY,
       api_secret: process.env.CLOUDINARY_API_SECRET,
     })
-
-    const file = convertBufferToString(req)
-    if (file === undefined)
-      return res.status(400).json({ error: 'Error converting buffer to string' })
-
-    const { secure_url } = await uploader.upload(file)
-
-    const data = await prisma.posts.update({
+    const dados = await prisma.posts.findFirst({
       where: { id: req.params.id },
-      data: {
-        title: req.body.title,
-        image: secure_url,
-        text: req.body.text,
-        desc: req.body.desc,
-        author: req.body.author,
-      },
+      select: { image: true },
     })
 
-    return res.status(201).send({ msg: 'Success!', data })
+    // console.log(file)
+    if (!req.file) {
+      figura = dados
+      console.log('Entrou no if file!')
+
+      const data = await prisma.posts.update({
+        where: { id: req.params.id },
+        data: {
+          title: req.body.title,
+          text: req.body.text,
+          desc: req.body.desc,
+          author: req.body.author,
+        },
+      })
+      return res.status(400).json({ error: 'Post atualizado menos a imagem!!' })
+    } else {
+      const file: any = convertBufferToString(req)
+
+      const { secure_url } = await uploader.upload(file)
+
+      await prisma.posts.update({
+        where: { id: req.params.id },
+        data: {
+          title: req.body.title,
+          image: secure_url,
+          text: req.body.text,
+          desc: req.body.desc,
+          author: req.body.author,
+        },
+      })
+    }
+
+    return res.status(201).send({ msg: 'Success!' })
   } catch (error) {
     return res.status(400).send({ msg: 'Error!', error })
   }
