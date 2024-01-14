@@ -1,12 +1,11 @@
-import { PrismaClient } from "@prisma/client"
-import { Request, Response } from "express"
-import { convertBufferToString, uploader } from "../config/uploader"
+import { PrismaClient } from '@prisma/client'
+import { Request, Response } from 'express'
+import { convertBufferToString, uploader } from '../config/uploader'
 
 var cloudinary = require('cloudinary')
 
 var imagem = ''
 var resultado = ''
-
 
 const prisma = new PrismaClient()
 
@@ -25,7 +24,8 @@ async function RegisterPost(req: Request, res: Response) {
     // })
 
     const file = convertBufferToString(req)
-    if (file === undefined) return res.status(400).json({ error: 'Error converting buffer to string' })
+    if (file === undefined)
+      return res.status(400).json({ error: 'Error converting buffer to string' })
 
     const { secure_url } = await uploader.upload(file)
 
@@ -37,16 +37,15 @@ async function RegisterPost(req: Request, res: Response) {
         desc: req.body.desc,
         likes: Number(req.body.likes),
         views: Number(req.body.views),
-        author: req.body.author
-      }
+        author: req.body.author,
+      },
     })
 
-    return res.status(201).send({ msg: "Success!", data })
+    return res.status(201).send({ msg: 'Success!', data })
   } catch (error) {
-    return res.status(400).send({ msg: "Error!", error })
+    return res.status(400).send({ msg: 'Error!', error })
   }
 }
-
 
 async function UpdatePost(req: Request, res: Response) {
   try {
@@ -56,10 +55,9 @@ async function UpdatePost(req: Request, res: Response) {
       api_secret: process.env.CLOUDINARY_API_SECRET,
     })
 
-
-
     const file = convertBufferToString(req)
-    if (file === undefined) return res.status(400).json({ error: 'Error converting buffer to string' })
+    if (file === undefined)
+      return res.status(400).json({ error: 'Error converting buffer to string' })
 
     const { secure_url } = await uploader.upload(file)
 
@@ -70,18 +68,15 @@ async function UpdatePost(req: Request, res: Response) {
         image: secure_url,
         text: req.body.text,
         desc: req.body.desc,
-        likes: Number(req.body.likes),
-        views: Number(req.body.views),
-        author: req.body.author
-      }
+        author: req.body.author,
+      },
     })
 
-    return res.status(201).send({ msg: "Success!", data })
+    return res.status(201).send({ msg: 'Success!', data })
   } catch (error) {
-    return res.status(400).send({ msg: "Error!", error })
+    return res.status(400).send({ msg: 'Error!', error })
   }
 }
-
 
 async function updateLikes(req: Request, res: Response) {
   try {
@@ -105,7 +100,6 @@ async function updateLikes(req: Request, res: Response) {
     return res.status(400).send({ msg: 'ERROR!!', error })
   }
 }
-
 
 async function updateViews(req: Request, res: Response) {
   try {
@@ -133,66 +127,56 @@ async function updateViews(req: Request, res: Response) {
 async function getAllPosts(req: Request, res: Response) {
   try {
     const data = await prisma.posts.findMany({
-      orderBy: {createdAt: 'desc'}
+      orderBy: { createdAt: 'desc' },
     })
 
     return res.status(201).send({ data })
-
   } catch (error) {
-
-    return res.status(400).send({ msg: "Error!", error })
-
+    return res.status(400).send({ msg: 'Error!', error })
   }
 }
-
 
 async function deletePost(req: Request, res: Response) {
   try {
     await prisma.posts.delete({
       where: { id: req.params.id },
-
     })
 
-    return res.status(201).send({ msg: "Deletado" })
-
+    return res.status(201).send({ msg: 'Deletado' })
   } catch (error) {
-
-    return res.status(400).send({ msg: "Error!", error })
-
+    return res.status(400).send({ msg: 'Error!', error })
   }
 }
 
 async function deleteAll(req: Request, res: Response) {
   try {
-    await prisma.posts.deleteMany({
+    await prisma.posts.deleteMany({})
 
-    })
-
-    return res.status(201).send({ msg: "Deletado" })
-
+    return res.status(201).send({ msg: 'Deletado' })
   } catch (error) {
-
-    return res.status(400).send({ msg: "Error!", error })
-
+    return res.status(400).send({ msg: 'Error!', error })
   }
 }
 
 async function selectedPost(req: Request, res: Response) {
   try {
-
     const data = await prisma.posts.findFirst({
       where: { id: req.params.id },
-
     })
 
     return res.status(201).send(data)
-
   } catch (error) {
-
-    return res.status(400).send({ msg: "Error!", error })
-
+    return res.status(400).send({ msg: 'Error!', error })
   }
 }
 
-
-export default { getAllPosts, updateViews, updateLikes, deleteAll, deletePost, selectedPost, RegisterPost, UpdatePost }
+export default {
+  getAllPosts,
+  updateViews,
+  updateLikes,
+  deleteAll,
+  deletePost,
+  selectedPost,
+  RegisterPost,
+  UpdatePost,
+}
