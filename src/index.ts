@@ -10,16 +10,15 @@ const { PORT } = process.env
 
 const app = express()
 
-
-  
-app.use(cors({
-  origin: ["https://gamm-traducoes.netlify.app",
-  // "https://gerusa-site.netlify.app/update-post",
-  "http://localhost:5173"]
-
- 
-}))
-
+app.use(
+  cors({
+    origin: [
+      'https://gamm-traducoes.netlify.app',
+      'http://localhost:5173',
+      'https://gustasoneca.000webhostapp.com',
+    ],
+  })
+)
 
 // app.use(cors())
 
@@ -33,5 +32,3 @@ app.listen(PORT, () => {
 })
 
 export default app
-
-
